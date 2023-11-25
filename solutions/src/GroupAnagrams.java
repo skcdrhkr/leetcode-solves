@@ -1,3 +1,8 @@
+/**
+ * Problem URL: https://leetcode.com/problems/group-anagrams/description/
+ * Level: Medium
+ */
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

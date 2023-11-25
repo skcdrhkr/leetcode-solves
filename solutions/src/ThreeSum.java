@@ -1,11 +1,11 @@
+/**
+ * Problem URL: https://leetcode.com/problems/3sum/description/
+ * Level: Medium
+ */
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-/**
- * Problem URL: https://leetcode.com/problems/3sum/
- * Level: Medium
- */
 
 public class ThreeSum {
     public static void main(String[] args) {

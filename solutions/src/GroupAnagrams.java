@@ -17,15 +17,14 @@ public class GroupAnagrams {
     }
 
     public static List<List<String>> groupAnagrams(String[] strs) {
-        HashMap<String, List<String>> hash = new HashMap<>();
-        for (int i = 0; i < strs.length; i++) {
-            char[] charArray = strs[i].toCharArray();
-            Arrays.sort(charArray);
-            String sortedWord = new String(charArray);
-            hash.putIfAbsent(sortedWord, new ArrayList<>());
-            if (hash.containsKey(sortedWord))
-                hash.get(sortedWord).add(strs[i]);
-        }
-        return new ArrayList<>(hash.values());
+        HashMap<String, List<String>> res = new HashMap<>();
+        Arrays.stream(strs).forEach(s -> {
+            byte[] bts = s.getBytes();
+            Arrays.sort(bts);
+            String cur = new String(bts);
+            res.putIfAbsent(cur,new ArrayList<>());
+            res.get(cur).add(s);
+        });
+        return new ArrayList<>(res.values());
     }
 }

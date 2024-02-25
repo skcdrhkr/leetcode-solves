@@ -1,6 +1,3 @@
-import java.util.Collections;
-import java.util.PriorityQueue;
-
 /**
  * Problem URL: https://leetcode.com/problems/bitwise-and-of-numbers-range/description
  * Level: Medium
@@ -25,14 +22,12 @@ public class BitwiseANDNumRange {
     }
 
     public static int rangeBitwiseAnd(int left, int right) {
-       int count=0;
-       while(left!=right) {
-           left>>=1;
-           right>>=1;
-           count+=1;
-       }
-       return left<<=count;
-       PriorityQueue<Integer> cur = new PriorityQueue<Integer>(Collections.reverseOrder());
-       cur.p
+        int count = 0;
+        while (left != right) {
+            left >>= 1;
+            right >>= 1;
+            count += 1;
+        }
+        return left <<= count;
     }
 }

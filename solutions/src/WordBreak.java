@@ -24,28 +24,26 @@ public class WordBreak {
 
     public static boolean wordBreak(String s, List<String> wordDict) {
         HashSet<String> st = new HashSet<>(wordDict);
-        int n = s.length();
         if (st.contains(s))
             return true;
-        byte[] dp = new byte[n + 1];
-        return breaking(s.getBytes(), st, 0, n, dp) == 2;
+        Boolean[] memo = new Boolean[s.length() + 1];
+        return breakingWord(s, wordDict, 0, s.length(), memo);
     }
 
-    private static byte breaking(byte[] s, HashSet<String> st, int i, int n, byte[] dp) {
-        if (i >= n)
-            return 2;
-        byte cur = 1;
-        if (dp[i] != 0) {
-            return dp[i];
+    private static Boolean breakingWord(String s, List<String> wordDict, int i, int length, Boolean[] memo) {
+        if (i >= length) {
+            return true;
         }
-        for (int k = i; k < n; k++) {
-            if (st.contains(new String(s, i, k - i + 1))) {
-                cur = breaking(s, st, k + 1, n, dp);
+        if (memo[i] != null) {
+            return memo[i];
+        }
+        for (int j = i; j <= length; j++) {
+            if (wordDict.contains(s.substring(i, j)) && breakingWord(s, wordDict, j, length, memo)) {
+                memo[i] = true;
+                return memo[i];
             }
-            if (cur == 2)
-                break;
         }
-        dp[i] = cur;
-        return cur;
+        memo[i] = false;
+        return memo[i];
     }
 }

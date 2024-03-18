@@ -5,15 +5,15 @@ import java.util.Stack;
  * Level: Medium
  */
 
-public class MinRemoveMakeValidParinthesis {
+public class MinRemoveMakeValidParenthesis {
 
     public static void main(String[] args) {
         // Case 1
-        System.out.println(MinRemoveMakeValidParinthesis.minRemoveToMakeValid("lee(t(c)o)de)"));
+        System.out.println(MinRemoveMakeValidParenthesis.minRemoveToMakeValid("lee(t(c)o)de)"));
         // Case 2
-        System.out.println(MinRemoveMakeValidParinthesis.minRemoveToMakeValid("a)b(c)d"));
+        System.out.println(MinRemoveMakeValidParenthesis.minRemoveToMakeValid("a)b(c)d"));
         // Case 3
-        System.out.println(MinRemoveMakeValidParinthesis.minRemoveToMakeValid("))(("));
+        System.out.println(MinRemoveMakeValidParenthesis.minRemoveToMakeValid("))(("));
     }
 
     public static String minRemoveToMakeValid(String s) {

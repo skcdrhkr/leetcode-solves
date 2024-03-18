@@ -20,36 +20,30 @@ public class ReverseWordsString {
     public static String reverseWords(String sentence) {
 
         // Replace this placeholder return statement with your code
-
-        char[] characters = sentence.toCharArray();
-        int n = characters.length;
-        int first = 0, second = n - 1;
-        reverseString(characters, first, second);
+        char[] result = sentence.trim().toCharArray();
+        int length = result.length;
+        reverse(result, 0, length - 1);
+        int first = 0, second = 0;
         StringBuilder builder = new StringBuilder();
-        while (first < n) {
-            while (first < n && characters[first] == ' ') first += 1;
-            if (first == n) break;
-            second = first;
-            while (second < n && characters[second] != ' ') second += 1;
-            reverseString(characters, first, second - 1);
-            String str = new String(characters, first, second - first);
-            if (builder.isEmpty())
-                builder.append(str);
-            else
-                builder.append(" ").append(str);
+        while (second < length) {
+            while (second < length && result[second] == ' ') second += 1;
             first = second;
+            while (second < length && result[second] != ' ') second += 1;
+            reverse(result, first, second - 1);
+            builder.append(result, first, second - first);
+            if (second < length) builder.append(' ');
         }
         return builder.toString();
     }
 
-    private static void reverseString(char[] cs, int first, int second) {
+    public static void reverse(char[] arr, int lo, int hi) {
         char temp;
-        while (first < second) {
-            temp = cs[first];
-            cs[first] = cs[second];
-            cs[second] = temp;
-            first += 1;
-            second -= 1;
+        while (lo < hi) {
+            temp = arr[lo];
+            arr[lo] = arr[hi];
+            arr[hi] = temp;
+            lo++;
+            hi--;
         }
     }
 }

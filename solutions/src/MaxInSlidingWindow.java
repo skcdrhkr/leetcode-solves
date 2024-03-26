@@ -1,7 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
-import java.util.LinkedList;
 
 /**
  * Problem URL: https://leetcode.com/problems/sliding-window-maximum/
@@ -32,57 +31,51 @@ public class MaxInSlidingWindow {
 
     public static int[] maxSlidingWindow(int[] nums, int k) {
         int n = nums.length;
-        Deque<Integer> deque = new ArrayDeque<>();
-        int left = 0, right = 0;
-        int m = k >= n ? 1 : n - k + 1;
-        int[] result = new int[m];
-        while (right < k && right < n) {
-            if (deque.isEmpty()) {
-                deque.add(right);
-            } else if (nums[deque.peekFirst()] < nums[right]) {
-                deque.addFirst(right);
-            } else {
-                while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[right]) {
-                    deque.pollLast();
-                }
-                deque.addLast(right);
-            }
-            right += 1;
+        MonotonicDeque md = new MonotonicDeque();
+        int first = 0, second = 0;
+        while (second < k && second < n) {
+            md.add(second++, nums);
         }
-        result[left++] = nums[deque.peekFirst()];
-        while (right < n) {
-            while (!deque.isEmpty() && deque.peekFirst() < left) {
-                deque.pollFirst();
-            }
-            if (deque.isEmpty()) {
-                deque.add(right);
-            } else if (nums[deque.peekFirst()] < nums[right]) {
-                deque.addFirst(right);
-            } else {
-                while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[right]) {
-                    deque.pollLast();
-                }
-                deque.addLast(right);
-            }
-            result[left++] = nums[deque.peekFirst()];
-            right++;
+        if (second == n) {
+            int[] res = new int[1];
+            res[0] = nums[md.getMax()];
+            return res;
         }
-        return result;
+        int[] res = new int[n - k + 1];
+        while (second < n) {
+            res[first++] = nums[md.getMax()];
+            if (md.getMax()<first) {
+                md.remove();
+            }
+            md.add(second, nums);
+            second += 1;
+        }
+        res[first] = nums[md.getMax()];
+        return res;
     }
 
-    static class MonotonicQueue {
-        private LinkedList<Integer> list;
+    static class MonotonicDeque {
+        public Deque<Integer> queue;
 
-        public MonotonicQueue() {
-            list = new LinkedList<>();
+        public MonotonicDeque() {
+            this.queue = new ArrayDeque<>();
         }
 
-        public boolean add(int num) {
-            while (!list.isEmpty() && list.peekLast() <= num) {
-                list.pollLast();
+        public void add(int ind, int[] nums) {
+            while (!queue.isEmpty() && nums[queue.peekLast()] <= nums[ind]) {
+                queue.pollLast();
             }
-            list.addLast(num);
-            return true;
+            queue.addLast(ind);
+        }
+
+        public void remove() {
+            if (!queue.isEmpty())
+                queue.pollFirst();
+        }
+
+        public int getMax() {
+            return queue.peekFirst();
         }
     }
+
 }

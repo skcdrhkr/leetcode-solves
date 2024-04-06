@@ -1,5 +1,3 @@
-import java.util.Stack;
-
 /**
  * Problem URL: https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/description/
  * Level: Medium
@@ -14,42 +12,33 @@ public class MinRemoveMakeValidParenthesis {
         System.out.println(MinRemoveMakeValidParenthesis.minRemoveToMakeValid("a)b(c)d"));
         // Case 3
         System.out.println(MinRemoveMakeValidParenthesis.minRemoveToMakeValid("))(("));
+
+        // Case 4
+        System.out.println(MinRemoveMakeValidParenthesis.minRemoveToMakeValid("((()()("));
     }
 
     public static String minRemoveToMakeValid(String s) {
         char[] cs = s.toCharArray();
-        char cur;
-        Stack<Integer> st = new Stack<>();
-        for (int i = 0; i < cs.length; i++) {
-            cur = cs[i];
-            if (cur != ')' && cur != '(')
-                continue;
-            if (cur == ')') {
-                if (!st.isEmpty() && st.peek() < 0) {
-                    st.pop();
-                } else {
-                    st.push(i + 1);
-                }
-            } else {
-                st.push(-1 * (i + 1));
+        int len = cs.length;
+        int open = 0;
+        for (int i = 0; i < len; i++) {
+            if (cs[i] == '(') {
+                open++;
+            } else if (cs[i] == ')') {
+                if (open != 0) open--;
+                else cs[i] = '-';
             }
         }
-        int ind = cs.length - 1;
-        int top;
-        if (st.isEmpty())
-            return s;
-        for (int k = cs.length - 1; k >= 0; k--) {
-            if ((cs[k] != ')' && cs[k] != '(') || (st.isEmpty())) {
-                cs[ind--] = cs[k];
-                continue;
-            }
-            top = st.peek() > 0 ? st.peek() - 1 : (-1 * st.peek()) - 1;
-            if (k != top) {
-                cs[ind--] = cs[k];
-            } else {
-                st.pop();
+        for (int i = len - 1; i >= 0 && open > 0; i--) {
+            if (cs[i] == '(') {
+                cs[i] = '-';
+                open--;
             }
         }
-        return new String(cs, ind + 1, cs.length - ind - 1);
+        int ind = 0;
+        for (int i = 0; i < len; i++) {
+            if (cs[i] != '-') cs[ind++] = cs[i];
+        }
+        return new String(cs).substring(0, ind);
     }
 }

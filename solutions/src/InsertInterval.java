@@ -15,25 +15,19 @@ public class InsertInterval {
     }
 
     public static int[][] insert(int[][] intervals, int[] newInterval) {
-        int[] toAdd = newInterval;
         ArrayList<int[]> result = new ArrayList<>();
-        for (int[] val : intervals) {
-            if (toAdd[1] < val[0]) {
-                result.add(toAdd);
-                toAdd = val;
-                continue;
-            } else if (toAdd[0] > val[1]) {
-                result.add(val);
-                continue;
-            }
-            if (toAdd[0] >= val[0]) {
-                toAdd[0] = val[0];
-            }
-            if (toAdd[1] <= val[1]) {
-                toAdd[1] = val[1];
+        for (int[] cur : intervals) {
+            if (cur[0] > newInterval[1]) {
+                result.add(newInterval);
+                newInterval = cur;
+            } else if (newInterval[0] > cur[1]) {
+                result.add(cur);
+            } else {
+                newInterval[0] = Math.min(cur[0], newInterval[0]);
+                newInterval[1] = Math.max(cur[1], newInterval[1]);
             }
         }
-        result.add(toAdd);
-        return result.toArray(new int[result.size()][]);
+        result.add(newInterval);
+        return result.toArray(new int[0][]);
     }
 }

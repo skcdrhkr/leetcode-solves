@@ -57,7 +57,7 @@ public class EmployeeFreeTime {
         return ans.subList(1, ans.size());
     }
 
-    public static List<Interval> employeeFreeTime(List<List<Interval>> input) {
+    public static List<Interval> employeeFreeTimeSorting(List<List<Interval>> input) {
         List<Interval> schedules = new ArrayList<>(input.stream().flatMap(Collection::stream).toList());
         schedules.sort(Comparator.comparingInt(x -> x.start));
 
@@ -73,6 +73,32 @@ public class EmployeeFreeTime {
         return result;
     }
 
+    public static List<Interval> employeeFreeTime(List<List<Interval>> schedules) {
+        int len = schedules.size();
+        PriorityQueue<int[]> heap = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+        List<Interval> result = new ArrayList<>();
+
+        for (int i = 0; i < len; i++) {
+            heap.add(new int[]{schedules.get(i).get(0).start, i, 0});
+        }
+        int[] previous = heap.peek();
+        int previousEnd = schedules.get(previous[1]).get(previous[2]).end;
+        while (!heap.isEmpty()) {
+            int[] top = heap.poll();
+            int i = top[1];
+            int j = top[2];
+            Interval cur = schedules.get(i).get(j);
+            if (cur.start > previousEnd) {
+                result.add(new Interval(previousEnd, cur.start));
+            }
+            previousEnd = Math.max(cur.end, previousEnd);
+            j += 1;
+            if (j < schedules.get(i).size())
+                heap.add(new int[]{schedules.get(i).get(j).start, i, j});
+        }
+        return result;
+    }
 }
 
 class Interval {

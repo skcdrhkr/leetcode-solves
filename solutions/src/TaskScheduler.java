@@ -1,4 +1,5 @@
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public class TaskScheduler {
 
@@ -17,32 +18,46 @@ public class TaskScheduler {
     }
 
     public static int leastInterval(char[] tasks, int n) {
+        int len = tasks.length;
+        if (n == 0) return len;
         int[] freq = new int[26];
-        int[] track = new int[26];
-        Integer[] sortedTasks = new Integer[26];
+        int[] prevIndex = new int[26];
+
+        for (char c : tasks) {
+            freq[c - 'A']++;
+        }
+        PriorityQueue<Character> heap = new PriorityQueue<>((a, b) -> freq[b - 'A'] - freq[a - 'A']);
         for (int i = 0; i < 26; i++) {
-            sortedTasks[i] = i;
-        }
-        int totalTasks = tasks.length;
-        int taskCount = 1;
-        for (char task : tasks) {
-            freq[task - 'A']++;
-        }
-        Arrays.sort(sortedTasks, (x, y) -> (freq[y] - freq[x]));
-        while (totalTasks > 0) {
-            for (int i : sortedTasks) {
-                if (freq[i] != 0) {
-                    freq[i]--;
-                    if ((track[i] == 0) || ((taskCount - track[i]) >= n)) {
-                        track[i] = taskCount;
-                    } else {
-                        track[i] = (track[i] + n + 1);
-                    }
-                    totalTasks--;
-                    taskCount = track[i] + 1;
-                }
+            if (freq[i] != 0) {
+                heap.add((char) (i + 'A'));
             }
         }
-        return taskCount - 1;
+        int result = 0;
+        int remain = len;
+        ArrayList<Character> tempList;
+        boolean flag;
+        while (remain > 0) {
+            tempList = new ArrayList<>();
+            flag = false;
+            while (!heap.isEmpty()) {
+                char top = heap.poll();
+                if (prevIndex[top - 'A'] == 0 || (result - prevIndex[top - 'A'] >= n)) {
+                    result++;
+                    prevIndex[top - 'A'] = result;
+                    freq[top - 'A'] -= 1;
+                    if (freq[top - 'A'] != 0) heap.add(top);
+                    remain -= 1;
+                    flag = true;
+                    break;
+                } else {
+                    tempList.add(top);
+                }
+            }
+            if (!flag) {
+                result += 1;
+            }
+            heap.addAll(tempList);
+        }
+        return result;
     }
 }

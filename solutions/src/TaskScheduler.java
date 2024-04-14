@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.PriorityQueue;
-
 public class TaskScheduler {
 
     public static void main(String[] args) {
@@ -21,43 +18,27 @@ public class TaskScheduler {
         int len = tasks.length;
         if (n == 0) return len;
         int[] freq = new int[26];
-        int[] prevIndex = new int[26];
-
+        int maxFreq = 0;
         for (char c : tasks) {
             freq[c - 'A']++;
+            if (freq[c - 'A'] > maxFreq) maxFreq = freq[c - 'A'];
         }
-        PriorityQueue<Character> heap = new PriorityQueue<>((a, b) -> freq[b - 'A'] - freq[a - 'A']);
+        int possibleIdle = (maxFreq - 1) * n;
+        boolean skip = true;
         for (int i = 0; i < 26; i++) {
             if (freq[i] != 0) {
-                heap.add((char) (i + 'A'));
-            }
-        }
-        int result = 0;
-        int remain = len;
-        ArrayList<Character> tempList;
-        boolean flag;
-        while (remain > 0) {
-            tempList = new ArrayList<>();
-            flag = false;
-            while (!heap.isEmpty()) {
-                char top = heap.poll();
-                if (prevIndex[top - 'A'] == 0 || (result - prevIndex[top - 'A'] >= n)) {
-                    result++;
-                    prevIndex[top - 'A'] = result;
-                    freq[top - 'A'] -= 1;
-                    if (freq[top - 'A'] != 0) heap.add(top);
-                    remain -= 1;
-                    flag = true;
+                int cur = freq[i];
+                if (freq[i] == maxFreq && skip) {
+                    skip = false;
+                    continue;
+                }
+                possibleIdle -= Math.min(cur, maxFreq - 1);
+                if (possibleIdle < 0) {
+                    possibleIdle = 0;
                     break;
-                } else {
-                    tempList.add(top);
                 }
             }
-            if (!flag) {
-                result += 1;
-            }
-            heap.addAll(tempList);
         }
-        return result;
+        return possibleIdle + len;
     }
 }

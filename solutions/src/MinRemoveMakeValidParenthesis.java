@@ -6,6 +6,10 @@
 public class MinRemoveMakeValidParenthesis {
 
     public static void main(String[] args) {
+
+        // Case 0
+        System.out.println(MinRemoveMakeValidParenthesis.minRemoveToMakeValid("())()((("));
+
         // Case 1
         System.out.println(MinRemoveMakeValidParenthesis.minRemoveToMakeValid("lee(t(c)o)de)"));
         // Case 2

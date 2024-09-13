@@ -1,6 +1,8 @@
 package streams;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TheOtherTester {
@@ -47,6 +49,29 @@ public class TheOtherTester {
         List<Integer> numbersWithDuplicates = Arrays.asList(1, 2, 3, 2, 4, 1, 5, 6, 5);
         List<Integer> uniqueNumbers = numbersWithDuplicates.stream().distinct().toList();
         System.out.println("List with unique numbers: " + uniqueNumbers);
-        
+
+        List<Transaction> transactions = Arrays.asList(
+                new Transaction("2022-01-01", 100),
+                new Transaction("2022-01-01", 200),
+                new Transaction("2022-01-02", 300),
+                new Transaction("2022-01-02", 400),
+                new Transaction("2022-01-03", 500)
+        );
+        Map<String, Integer> perDayTransactionSum = transactions.stream().collect(Collectors.groupingBy(Transaction::date, Collectors.summingInt(Transaction::amount)));
+        System.out.println("Total transaction for each day: " + perDayTransactionSum);
+
+        int[] array = {4, 2, 7, 1, 5, 3, 6};
+        int k = 3; // Find the 3rd smallest element
+        int kthSmallest = Arrays.stream(array).sorted().skip(k - 1).findFirst().orElse(-1);
+        System.out.println("Kth Smallest element from array: " + kthSmallest);
+
+        List<String> words = Arrays.asList("apple", "banana", "apple", "cherry",
+                "banana", "apple");
+        Map<String, Long> wordsFreq = words.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println("Frequency of input words: " + wordsFreq);
+
+        List<Integer> numbersList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        Map<Boolean, List<Integer>> partitionedList = numbersList.stream().collect(Collectors.partitioningBy(n -> n % 2 == 0));
+        System.out.println("Partitioned list based on even/odd: " + partitionedList);
     }
 }

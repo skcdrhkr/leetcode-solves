@@ -2,44 +2,45 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 
 public class MedianOfStream {
-    static class MedianFinder {
 
-        PriorityQueue<Integer> minH;
-        PriorityQueue<Integer> mxH;
+    PriorityQueue<Integer> minHeap;
+    PriorityQueue<Integer> maxHeap;
 
-        public MedianFinder() {
-            minH = new PriorityQueue<Integer>();
-            mxH = new PriorityQueue<Integer>(Collections.reverseOrder());
+    public MedianOfStream() {
+        // Write your code here
+        minHeap = new PriorityQueue<>();
+        maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+    }
+
+    public void insertNum(int num) {
+        if (minHeap.isEmpty()) {
+            minHeap.add(num);
+            return;
         }
-
-        public void addNum(int num) {
-            if (mxH.isEmpty()) {
-                mxH.add(num);
-                return;
-            }
-
-            int prev;
-            if (num <= mxH.peek()) {
-                mxH.add(num);
-                if ((mxH.size() - minH.size()) >= 2)
-                    minH.add(mxH.poll());
-            } else if (minH.isEmpty() || num >= minH.peek()) {
-                minH.add(num);
-                if ((minH.size() - mxH.size()) >= 1)
-                    mxH.add(minH.poll());
+        // Write your code here
+        if (maxHeap.size() == minHeap.size()) {
+            if (num >= maxHeap.peek()) {
+                minHeap.add(num);
             } else {
-                if (mxH.size() == minH.size())
-                    mxH.add(num);
-                else
-                    minH.add(num);
+                minHeap.add(maxHeap.poll());
+                maxHeap.add(num);
+            }
+        } else {
+            if (num <= minHeap.peek()) {
+                maxHeap.add(num);
+            } else {
+                maxHeap.add(minHeap.poll());
+                minHeap.add(num);
             }
         }
+    }
 
-        public double findMedian() {
-            if (mxH.size() == minH.size()) {
-                return (double) (mxH.peek() + minH.peek()) / 2;
-            }
-            return (double) mxH.peek();
+    public double findMedian() {
+        // Replace this placeholder return statement with your code
+        if (maxHeap.size() == minHeap.size()) {
+            return (double) (maxHeap.peek() + minHeap.peek()) / 2;
+        } else {
+            return (double) minHeap.peek();
         }
     }
 }

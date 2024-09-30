@@ -1,3 +1,7 @@
+package stacks;
+
+import java.util.Stack;
+
 /**
  * Problem URL: https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/description/
  * Level: Medium
@@ -22,27 +26,29 @@ public class MinRemoveMakeValidParenthesis {
     }
 
     public static String minRemoveToMakeValid(String s) {
-        char[] cs = s.toCharArray();
-        int len = cs.length;
+        char[] expression = s.toCharArray();
+        int len = expression.length;
         int open = 0;
+        Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < len; i++) {
-            if (cs[i] == '(') {
-                open++;
-            } else if (cs[i] == ')') {
-                if (open != 0) open--;
-                else cs[i] = '-';
+            char c = expression[i];
+            if (c == '(') {
+                stack.push(i);
+            } else if (c == ')') {
+                if (stack.isEmpty()) {
+                    expression[i] = '-';
+                } else {
+                    stack.pop();
+                }
             }
         }
-        for (int i = len - 1; i >= 0 && open > 0; i--) {
-            if (cs[i] == '(') {
-                cs[i] = '-';
-                open--;
-            }
+        while (!stack.isEmpty()) {
+            expression[stack.pop()] = '-';
         }
-        int ind = 0;
-        for (int i = 0; i < len; i++) {
-            if (cs[i] != '-') cs[ind++] = cs[i];
+        StringBuilder sb = new StringBuilder();
+        for (char c : expression) {
+            if (c != '-') sb.append(c);
         }
-        return new String(cs).substring(0, ind);
+        return sb.toString();
     }
 }

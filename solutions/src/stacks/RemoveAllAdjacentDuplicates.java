@@ -1,3 +1,5 @@
+package stacks;
+
 import java.util.Stack;
 
 public class RemoveAllAdjacentDuplicates {
@@ -14,19 +16,19 @@ public class RemoveAllAdjacentDuplicates {
     }
 
     public static String removeDuplicates(String s) {
-
-        Stack<Character> st = new Stack<>();
+        Stack<Character> stack = new Stack<>();
         for (char c : s.toCharArray()) {
-            if (!st.isEmpty() && c == st.peek()) {
-                st.pop();
-            } else {
-                st.push(c);
+            if (stack.isEmpty()) stack.push(c);
+            else {
+                char top = stack.peek();
+                if (top == c) stack.pop();
+                else stack.push(c);
             }
         }
         StringBuilder sb = new StringBuilder();
-        while (!st.isEmpty())
-            sb.append(st.pop());
-
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop());
+        }
         return sb.reverse().toString();
     }
 }

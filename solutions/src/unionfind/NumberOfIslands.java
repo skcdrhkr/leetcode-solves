@@ -1,3 +1,4 @@
+package unionfind;
 /**
  * Problem URL: https://leetcode.com/problems/number-of-islands/description/
  * Level: Medium

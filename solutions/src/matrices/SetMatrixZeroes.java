@@ -1,3 +1,5 @@
+package matrices;
+
 /**
  * Problem URL: https://leetcode.com/problems/set-matrix-zeroes/description/
  * Level: Medium
@@ -29,41 +31,49 @@ public class SetMatrixZeroes {
     public static void setZeroes(int[][] matrix) {
         int n = matrix.length;
         int m = matrix[0].length;
-        boolean lastrowzero = false, thisrowzero = false;
-        // Checking if last row will need to be zeroed out
-        for (int j = 0; j < m; j++) {
-            if (matrix[n - 1][j] == 0) {
-                lastrowzero = true;
+        boolean isFirstColumnZero = false, isFirstRowZero = false;
+        for (int i = 0; i < n; i++) {
+            if (matrix[i][0] == 0) {
+                isFirstColumnZero = true;
                 break;
             }
         }
-        for (int i = 0; i < n - 1; i++) {
-            thisrowzero = false;
-            for (int j = 0; j < m; j++) {
-                if (matrix[i][j] == 0) {
-                    thisrowzero = true;
-                    // Storing this column zero tracking in last row of matrix;
-                    matrix[n - 1][j] = 0;
-                }
-            }
-            if (thisrowzero) {
-                for (int j = 0; j < m; j++) {
-                    matrix[i][j] = 0;
-                }
-            }
-        }
-        // Setting columns to zero based on last row
         for (int j = 0; j < m; j++) {
-            if (matrix[n - 1][j] == 0) {
-                for (int i = 0; i < n; i++) {
+            if (matrix[0][j] == 0) {
+                isFirstRowZero = true;
+                break;
+            }
+        }
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        for (int i = 1; i < n; i++) {
+            if (matrix[i][0] == 0) {
+                for (int j = 1; j < m; j++) {
                     matrix[i][j] = 0;
                 }
             }
         }
-        // Setting last row to zero as initially stored in lastrowzero
-        if (lastrowzero) {
+        for (int j = 1; j < m; j++) {
+            if (matrix[0][j] == 0) {
+                for (int i = 1; i < n; i++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        if (isFirstColumnZero) {
+            for (int i = 0; i < n; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+        if (isFirstRowZero) {
             for (int j = 0; j < m; j++) {
-                matrix[n - 1][j] = 0;
+                matrix[0][j] = 0;
             }
         }
     }

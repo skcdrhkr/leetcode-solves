@@ -18,24 +18,21 @@ public class DailyTemperatures {
         System.out.println(Arrays.toString(DailyTemperatures.dailyTemperatures(new int[]{30, 60, 90})));
     }
 
-    public static int[] dailyTemperatures(int[] temp) {
-        int n = temp.length;
-        int[] res = new int[n];
-        for (int i = n - 2; i >= 0; i--) {
-            if (temp[i + 1] > temp[i]) {
-                res[i] = 1;
-            } else {
-                for (int k = i + 1; ; k = k + res[k]) {
-                    if (temp[k] > temp[i]) {
-                        res[i] = k - i;
-                        break;
-                    }
-                    if (res[k] == 0) {
-                        res[i] = 0;
-                        break;
-                    }
-                }
+    public static int[] dailyTemperatures(int[] temps) {
+        int len = temps.length;
+        int[] res = new int[len];
+        if (len == 1) return res;
+        int mxTillNow = len - 1;
+        for (int i = len - 2; i >= 0; i--) {
+            if (temps[i] >= temps[mxTillNow]) {
+                mxTillNow = i;
+                continue;
             }
+            int days = 1;
+            while (temps[i + days] <= temps[i]) {
+                days += res[i + days];
+            }
+            res[i] = days;
         }
         return res;
     }

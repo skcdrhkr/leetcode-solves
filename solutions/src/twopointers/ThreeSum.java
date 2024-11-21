@@ -1,8 +1,9 @@
-package stacks;
 /**
  * Problem URL: https://leetcode.com/problems/3sum/description/
  * Level: Medium
  */
+
+package twopointers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ public class ThreeSum {
         int n = nums.length;
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums);
-        int i = 0, j = 1, k = n - 1;
+        int i = 0, j, k;
         if (nums[0] > 0)
             return result;
         while (i < n - 1) {

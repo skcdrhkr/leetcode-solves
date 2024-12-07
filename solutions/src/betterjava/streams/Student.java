@@ -1,4 +1,4 @@
-package streams;
+package betterjava.streams;
 
 public class Student {
     private int id;

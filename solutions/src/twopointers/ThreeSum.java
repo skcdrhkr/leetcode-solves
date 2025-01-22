@@ -1,5 +1,6 @@
 /**
- * Problem URL: https://leetcode.com/problems/3sum/description/
+ * Leetcode: https://leetcode.com/problems/3sum/description/
+ * Educative: https://www.educative.io/courses/grokking-coding-interview/3sum
  * Level: Medium
  */
 

@@ -2,6 +2,8 @@
  * Problem URL: https://leetcode.com/problems/climbing-stairs/description/
  * Level: Easy
  */
+package dp;
+
 public class ClimbingStairs {
 
     public static void main(String[] args) {
@@ -12,16 +14,14 @@ public class ClimbingStairs {
     }
 
     public static int climbStairs(int n) {
-        int first = 1, sec = 2, cur = 0;
-        if (n == 1)
-            return first;
-        if (n == 2)
-            return sec;
+        int first = 1, second = 2, current;
+        if (n == 1) return 1;
+        if (n == 2) return 2;
         for (int i = 3; i <= n; i++) {
-            cur = first + sec;
-            first = sec;
-            sec = cur;
+            current = first + second;
+            first = second;
+            second = current;
         }
-        return cur;
+        return second;
     }
 }

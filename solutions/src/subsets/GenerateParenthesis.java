@@ -18,24 +18,22 @@ public class GenerateParenthesis {
     public static ArrayList<String> generateCombinations(int n) {
 
         // Replace this placeholder return statement with your code
-
-        ArrayList<String> result = new ArrayList<String>();
-        getAllCombinations(new StringBuilder(), n, 0, result);
+        ArrayList<String> result = new ArrayList<>();
+        getAllParenthesisCombinations(n, 0, new StringBuilder(), result);
         return result;
     }
 
-    private static void getAllCombinations(StringBuilder builder, int n, int open, ArrayList<String> result) {
+    // (, (),()(),
+    private static void getAllParenthesisCombinations(int n, int open, StringBuilder builder, ArrayList<String> result) {
         if (open < 0) return;
-        if (builder.length() == (2 * n)) {
-            if (open != 0) return;
-            result.add(builder.toString());
+        if (builder.length() == 2 * n) {
+            if (open == 0)
+                result.add(builder.toString());
             return;
         }
-        builder.append("(");
-        getAllCombinations(builder, n, open + 1, result);
+        getAllParenthesisCombinations(n, open + 1, builder.append("("), result);
         builder.deleteCharAt(builder.length() - 1);
-        builder.append(")");
-        getAllCombinations(builder, n, open - 1, result);
+        getAllParenthesisCombinations(n, open - 1, builder.append(")"), result);
         builder.deleteCharAt(builder.length() - 1);
     }
 }

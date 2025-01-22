@@ -19,7 +19,7 @@ public class ValidWordAbbreviation {
 
     public static boolean validWordAbbreviation(String word, String abbr) {
 
-        int first = 0, second = 0, num = 0;
+        int first = 0, second = 0, num;
         while (second < abbr.length()) {
             if (Character.isDigit(abbr.charAt(second))) {
                 if (abbr.charAt(second) == '0')

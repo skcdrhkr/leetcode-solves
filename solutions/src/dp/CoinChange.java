@@ -1,63 +1,69 @@
 package dp;
+
+import java.util.Arrays;
+
 /**
  * Problem URL: https://leetcode.com/problems/coin-change/description
  * Level: Medium
  */
 
-import java.util.Arrays;
-
 public class CoinChange {
 
     public static void main(String[] args) {
         // Case 1
-        System.out.println(CoinChange.coinChangeBottomUp(new int[]{1, 2, 5}, 11));
+        System.out.println(CoinChange.coinChange(new int[]{1, 2, 5}, 11));
 
         // Case 2
-        System.out.println(CoinChange.coinChangeBottomUp(new int[]{1, 3, 4, 5}, 7));
+        System.out.println(CoinChange.coinChange(new int[]{1, 3, 4, 5}, 7));
 
         // Case 3
-        System.out.println(CoinChange.coinChangeBottomUp(new int[]{1}, 0));
+        System.out.println(CoinChange.coinChange(new int[]{2}, 3));
     }
 
-    public static int coinChangeBottomUp(int[] coins, int amount) {
-        int[] hash = new int[amount + 1];
-        Arrays.fill(hash, Integer.MAX_VALUE);
-        hash[0] = 0;
-        for (int coin : coins) {
-            for (int j = 1; j <= amount; j++) {
-                if (coin <= j) {
-                    int prevAmount = hash[j - coin];
-                    if (prevAmount != Integer.MAX_VALUE)
-                        prevAmount += 1;
-                    hash[j] = Math.min(hash[j], prevAmount);
-                }
+    public static int coinChange(int[] coins, int amount) {
+        int len = coins.length;
+        int[] dp = new int[amount + 1];
+        if (amount == 0) return 0;
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (int i = 0; i < len; i++) {
+            for (int j = coins[i]; j <= amount; j++) {
+                int inc = dp[j - coins[i]];
+                if (inc != Integer.MAX_VALUE)
+                    inc += 1;
+                dp[j] = Math.min(dp[j], inc);
             }
         }
-        return hash[amount] == Integer.MAX_VALUE ? -1 : hash[amount];
+
+        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
     }
 
-    public static int coinChangeTopDown(int[] coins, int amount) {
-        int[][] memo = new int[coins.length + 1][amount + 1];
-        for (int[] cur : memo) {
-            Arrays.fill(cur, -1);
-        }
-        Arrays.sort(coins);
-        int result = getChangeOfCoins(coins, amount, 0, memo);
-        return result == Integer.MAX_VALUE ? -1 : result;
-    }
-
-    private static int getChangeOfCoins(int[] coins, int amount, int ind, int[][] memo) {
+    private static int coinChangeTopDown(int[] coins, int amount) {
+        int len = coins.length;
+        int[][] memo = new int[amount + 1][len + 1];
         if (amount == 0) return 0;
-        if (ind >= coins.length || coins[ind] > amount) return Integer.MAX_VALUE;
-        if (memo[ind][amount] != -1) return memo[ind][amount];
-        int notUseCoin = getChangeOfCoins(coins, amount, ind + 1, memo);
-        int useCoin = getChangeOfCoins(coins, amount - coins[ind], ind, memo);
-        if (useCoin != Integer.MAX_VALUE) {
-            useCoin += 1;
-            memo[ind][amount] = Math.min(useCoin, notUseCoin);
-        } else {
-            memo[ind][amount] = notUseCoin;
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
         }
-        return memo[ind][amount];
+        getCoinChange(coins, len, amount, memo);
+        return memo[amount][len] == Integer.MAX_VALUE ? -1 : memo[amount][len];
+    }
+
+    private static int getCoinChange(int[] coins, int ind, int amount, int[][] memo) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (ind == 0) return Integer.MAX_VALUE;
+        if (memo[amount][ind] != -1) {
+            return memo[amount][ind];
+        }
+        if (coins[ind - 1] <= amount) {
+            int inc = getCoinChange(coins, ind, amount - coins[ind - 1], memo);
+            if (inc != Integer.MAX_VALUE) inc += 1;
+            memo[amount][ind] = Math.min(getCoinChange(coins, ind - 1, amount, memo), inc);
+        } else {
+            memo[amount][ind] = getCoinChange(coins, ind - 1, amount, memo);
+        }
+        return memo[amount][ind];
     }
 }

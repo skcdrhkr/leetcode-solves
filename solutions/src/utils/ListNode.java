@@ -48,7 +48,11 @@ public class ListNode {
     public String toString() {
         StringBuilder res = new StringBuilder();
         ListNode cur = this;
-        while (cur != null) {
+        if (cur != null) {
+            res.append(cur.val).append(" ");
+            cur = cur.next;
+        }
+        while (cur != null && cur != this) {
             res.append(cur.val).append(" ");
             cur = cur.next;
         }

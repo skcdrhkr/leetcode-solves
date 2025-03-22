@@ -1,3 +1,4 @@
+package dp;
 /**
  * Problem URL: https://leetcode.com/problems/perfect-squares/description
  * Level: Medium

@@ -1,3 +1,5 @@
+package dp;
+
 /**
  * Problem URL: https://leetcode.com/problems/house-robber/description/
  * Level: Medium
@@ -17,17 +19,14 @@ public class HouseRobber {
     }
 
     public static int rob(int[] nums) {
-        int n = nums.length;
-        if (n == 1)
-            return nums[0];
-        int first = nums[0];
-        int second = Math.max(nums[0], nums[1]);
+        int len = nums.length;
+        int inc = nums[0], exc = 0;
         int temp;
-        for (int i = 2; i < n; i++) {
-            temp = Math.max(nums[i] + first, second);
-            first = second;
-            second = temp;
+        for(int i=1;i<len;i++) {
+            temp = exc + nums[i];
+            exc  = Math.max(inc,exc);
+            inc = temp;
         }
-        return second;
+        return Math.max(inc,exc);
     }
 }

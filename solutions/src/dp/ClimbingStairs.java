@@ -14,13 +14,13 @@ public class ClimbingStairs {
     }
 
     public static int climbStairs(int n) {
-        int first = 1, second = 2, current;
+        int first = 1, second = 2, temp;
         if (n == 1) return 1;
         if (n == 2) return 2;
         for (int i = 3; i <= n; i++) {
-            current = first + second;
+            temp = first + second;
             first = second;
-            second = current;
+            second = temp;
         }
         return second;
     }

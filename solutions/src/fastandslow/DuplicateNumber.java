@@ -1,5 +1,8 @@
+package fastandslow;
+
 /**
  * Problem URL: https://leetcode.com/problems/find-the-duplicate-number/description/
+ * Educative: https://www.educative.io/courses/grokking-coding-interview/find-the-duplicate-number
  * Level: Medium
  */
 

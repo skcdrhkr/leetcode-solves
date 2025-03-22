@@ -1,3 +1,11 @@
+/**
+ * Educative: https://www.educative.io/courses/grokking-coding-interview/palindrome-linked-list
+ * Leetcode: https://leetcode.com/problems/palindrome-linked-list/description/
+ * Level: Easy
+ */
+
+package fastandslow;
+
 import utils.ListNode;
 
 public class PalindromeLinkedList {

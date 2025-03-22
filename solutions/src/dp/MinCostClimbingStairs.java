@@ -1,3 +1,5 @@
+package dp;
+
 /**
  * Problem URL: https://leetcode.com/problems/min-cost-climbing-stairs/description/
  * Level: Easy
@@ -14,16 +16,14 @@ public class MinCostClimbingStairs {
     }
 
     public static int minCostClimbingStairs(int[] cost) {
-        int n = cost.length;
-        if (n == 2)
-            return Math.min(cost[0], cost[1]);
+        int len = cost.length;
+        int prev = cost[0], cur = cost[1];
         int temp;
-        int first = 0, second = 0;
-        for (int i = 2; i <= n; i++) {
-            temp = Math.min(second + cost[i - 1], first + cost[i - 2]);
-            first = second;
-            second = temp;
+        for (int i = 2; i < len; i++) {
+            temp = Math.min(prev, cur) + cost[i];
+            prev = cur;
+            cur = temp;
         }
-        return second;
+        return Math.min(prev, cur);
     }
 }

@@ -4,6 +4,10 @@
  */
 package twopointers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class NextPalindromeUsingSameDigits {
 
     public static void main(String[] args) {
@@ -20,38 +24,57 @@ public class NextPalindromeUsingSameDigits {
         System.out.println(NextPalindromeUsingSameDigits.findNextPalindrome("1001"));
     }
 
+    public static boolean findNextPermutation(List<Character> digits) {
+        int i = digits.size() - 2;
+        while (i >= 0 && digits.get(i) >= digits.get(i + 1)) {
+            i--;
+        }
+        if (i == -1) {
+            return false;
+        }
+
+        int j = digits.size() - 1;
+        while (digits.get(j) <= digits.get(i)) {
+            j--;
+        }
+
+        Collections.swap(digits, i, j);
+        Collections.reverse(digits.subList(i + 1, digits.size()));
+        return true;
+    }
+
     public static String findNextPalindrome(String numStr) {
-        char[] nums = numStr.toCharArray();
-        int len = nums.length;
-        if (len <= 3) return "";
-        int mid = (len / 2) - 1;
-        int index = mid - 1;
-        while (index >= 0 && nums[index] >= nums[index + 1]) {
-            index--;
+        int n = numStr.length();
+
+        if (n == 1) {
+            return "";
         }
-        if (index == -1) return "";
-        int toSwap = index + 1, counter = toSwap;
-        while (counter >= mid) {
-            if (nums[counter] > nums[index] && nums[counter] < nums[toSwap]) {
-                toSwap = counter;
-            }
-            counter--;
+
+        int halfLength = n / 2;
+        List<Character> leftHalf = new ArrayList<>();
+        for (int i = 0; i < halfLength; i++) {
+            leftHalf.add(numStr.charAt(i));
         }
-        //todo Input toSwap character at index and shift all chars to right
-        char temp = nums[index];
-        nums[index] = nums[index + 1];
-        nums[index + 1] = temp;
-        int next;
-        if ((len & 1) == 0) {
-            next = mid + 1;
+
+        if (!findNextPermutation(leftHalf)) {
+            return "";
+        }
+
+        StringBuilder nextPalindrome = new StringBuilder();
+        for (char c : leftHalf) {
+            nextPalindrome.append(c);
+        }
+
+        if (n % 2 == 0) {
+            nextPalindrome.append(new StringBuilder(nextPalindrome).reverse());
         } else {
-            next = mid + 2;
+            nextPalindrome.append(numStr.charAt(halfLength));
+            nextPalindrome.append(new StringBuilder(nextPalindrome.substring(0, halfLength)).reverse());
         }
-        while (mid >= 0) {
-            nums[next] = nums[mid];
-            mid--;
-            next++;
+
+        if (nextPalindrome.toString().compareTo(numStr) > 0) {
+            return nextPalindrome.toString();
         }
-        return new String(nums);
+        return "";
     }
 }

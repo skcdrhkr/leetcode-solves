@@ -1,4 +1,4 @@
-package twoheaps;
+package heaps;
 
 import java.util.*;
 
